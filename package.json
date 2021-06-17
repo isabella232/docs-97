@@ -32,7 +32,7 @@
     "grunt-git": "^0.3.4",
     "grunt-jsdoc": "^0.5.8",
     "grunt-sitemap": "1.2.1",
-    "handsontable": "9.0.0",
+    "handsontable": "9.0.1",
     "highlightjs": "^9.10.0",
     "jsdoc": "3.6.3",
     "minimist": "^1.1.1",
