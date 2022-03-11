@@ -1,7 +1,6 @@
 var getRepoInfo = require('git-repo-info');
-var GitHubApi = require('github');
+var Octokit = require("@octokit/rest").Octokit;
 var Promise = require('bluebird');
-var fs = require('fs');
 var semver = require('semver');
 var github;
 
@@ -14,17 +13,12 @@ exports.setupGitApi = function setupGitApi(githubToken) {
   if (github) {
     return;
   }
-  github = new GitHubApi({
-    version: '3.0.0',
+  github = new Octokit({
+    auth: githubToken,
     timeout: 5000,
     headers: {
       'user-agent': 'Handsontable'
     }
-  });
-
-  github.authenticate({
-    type: 'oauth',
-    token: githubToken
   });
 };
 
@@ -45,22 +39,20 @@ exports.getLocalInfo = function getLocalInfo() {
  */
 exports.getHotLatestRelease = function getHotLatestRelease(range) {
   return new Promise(function(resolve, reject) {
-    github.releases.listReleases({
+    github.rest.repos.listReleases({
       owner: 'handsontable',
       repo: 'handsontable',
       page: 1,
       per_page: 100
-    }, function(err, resp) {
-      if (err) {
-        return reject(err);
-      }
+    }).then(function(resp) {
       if (range) {
-        resp = resp.filter(function(release) {
+        resp = resp.data.filter(function(release) {
           return semver.satisfies(release.tag_name, range);
         });
       }
-      resolve(resp.length ? resp[0] : null);
-    });
+
+      resolve(resp.data.length ? resp.data[0] : null);
+    }).catch(reject);
   });
 };
 
@@ -71,18 +63,15 @@ exports.getHotLatestRelease = function getHotLatestRelease(range) {
  */
 exports.getDocsVersions = function getDocsVersions() {
   return new Promise(function(resolve, reject) {
-    github.repos.getBranches({
-      user: 'handsontable',
+    github.rest.repos.listBranches({
+      owner: 'handsontable',
       repo: 'docs',
       page: 1,
       per_page: 100
-    }, function(err, resp) {
-      if (err) {
-        return reject(err);
-      }
+    }).then(function(resp) {
       var branches;
 
-      branches = resp.filter(function(branch) {
+      branches = resp.data.filter(function(branch) {
         return branch.name.match(/^\d{1,5}\.\d{1,5}\.\d{1,5}(\-(beta|alpha)(\d+)?)?$/) ? true : false;
 
       }).map(function(branch) {
@@ -100,6 +89,6 @@ exports.getDocsVersions = function getDocsVersions() {
       });
 
       resolve(branches);
-    });
+    }).catch(reject);
   });
 };
