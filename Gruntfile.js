@@ -265,7 +265,6 @@ module.exports = function(grunt) {
         clearInterval(timer);
         grunt.task.run('build');
         grunt.task.run('generate-doc-versions');
-        grunt.task.run('generate-disallow-for-robots');
 
         done();
       }, 50);
