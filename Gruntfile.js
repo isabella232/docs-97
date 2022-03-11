@@ -21,9 +21,9 @@ var path = require('path');
 var semver = require('semver');
 var gitHelper = require('./git-helper');
 
-if (semver.gt(process.versions.node, '6.11.5')) {
-  throw Error('This project supports Node.js <= 6.11.5, please downgrade your Node.js version and try again. You have currently installed version ' + process.versions.node + '.');
-}
+// if (semver.gt(process.versions.node, '6.11.5')) {
+//   throw Error('This project supports Node.js <= 6.11.5, please downgrade your Node.js version and try again. You have currently installed version ' + process.versions.node + '.');
+// }
 
 module.exports = function(grunt) {
   var
@@ -265,7 +265,6 @@ module.exports = function(grunt) {
         clearInterval(timer);
         grunt.task.run('build');
         grunt.task.run('generate-doc-versions');
-        grunt.task.run('generate-disallow-for-robots');
 
         done();
       }, 50);
