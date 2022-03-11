@@ -367,7 +367,7 @@ function onSearchKeyUp() {
 }
 
 function getDocUrl(docVersion) {
-  return location.href.replace(/\/docs\/\d+\.\d+\.\d+(\-(beta|alpha)(\d+)?)?\//, '/docs/' + docVersion + '/');
+  return location.protocol + '//' + location.host + '/docs/' + docVersion + '/tutorial-introduction.html';
 }
 function goTo(href) {
   location.href = href;
