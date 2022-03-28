@@ -15,7 +15,7 @@ module.exports = function(shipit) {
     branch: gitInfo.branch,
     ignores: ['.git', 'node_modules'],
     rsync: ['--force', '--delete', '--delete-excluded', '-I', '--stats', '--chmod=ug=rwX'],
-    keepReleases: 3,
+    keepReleases: 1,
     shallowClone: false
   };
 
