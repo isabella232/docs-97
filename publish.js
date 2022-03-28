@@ -28,6 +28,14 @@ var template = require('jsdoc/template'),
     view,
     outdir = env.opts.destination;
 
+var origResolveLinks = helper.resolveLinks;
+
+helper.resolveLinks = function(html) {
+  html = html.replace(/http:\/\/docs\.handsontable\.com\//g, 'https://handsontable.com/docs/');
+
+  return origResolveLinks.call(helper, html);
+}
+
 function find(spec) {
   return helper.find(data, spec);
 }
